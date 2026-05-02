@@ -18,7 +18,7 @@ The Daemon uses the 'Everything' search engine to locate files across massive ha
 3. Extract `es.exe` and place it in the same folder as Everything (usually `C:\Program Files\Everything`).
 
 ### Part 2: Install the VAM Bridge
-1. Download the latest `VamDependencyBridge.exe` from the **[Releases](link_here)** page.
+1. Download the latest `VamDependencyBridge.exe` from the **[Releases](https://github.com/hasback-code/vambridge/releases/tag/1.0.0)** page.
 2. Download `hasback.VAMBridgePlugin.x.var` and place it in your VAM `AddonPackages` folder.
 3. Run `VamDependencyBridge.exe`. Right-click the tray icon -> **Settings**. Set your VAM, Everything, and Repository paths.
    * *Note: The Daemon automatically clears its `error.txt` and `bridge_log.txt` on every fresh start to keep your logs relevant.*
