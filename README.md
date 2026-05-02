@@ -52,6 +52,8 @@ For advanced troubleshooting, the Windows Daemon supports command-line flags to 
 * **Enable Debug Mode:** Launch the daemon with `-d` or `--debug`. This creates a `bridge_log.txt` in the executable folder with step-by-step processing details.
   * *Example:* `VamDependencyBridge.exe -d`
 * **Normal Mode:** Launching the executable without any flags (default) will only log critical errors to `error.txt`.
+
+
 You can create a Windows shortcut to the `.exe`, right-click it, select **Properties**, and add ` -d` to the end of the **Target** field to always launch in debug mode.
 
 ---
