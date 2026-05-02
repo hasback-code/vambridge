@@ -28,7 +28,6 @@ public class VAMBridgePlugin : MVRScript
     private bool _cancelScan = false;
     private bool _cancelResolve = false;
     private bool _isScanning = false;
-    private bool _isFirstBoot = true; 
     private UIDynamicButton _cancelButton;
 
     // UX STATE MACHINE: 0=Normal, 1=Resolving, 2=Partial, 3=Failed, 4=Success
@@ -67,6 +66,7 @@ public class VAMBridgePlugin : MVRScript
             var resolveBtn = CreateButton("Resolve Missing");
             if (resolveBtn != null) resolveBtn.button.onClick.AddListener(() => StartCoroutine(ResolveMissing()));
 
+            // Debug mode OFF by default for public release
             _enableDebug = new JSONStorableBool("Enable Debug", false) { isStorable = true };
             RegisterBool(_enableDebug);
             CreateToggle(_enableDebug);
@@ -79,11 +79,8 @@ public class VAMBridgePlugin : MVRScript
             RegisterBool(_showPlayModeBtn);
             CreateToggle(_showPlayModeBtn);
 
-            var errorFieldUI = CreateTextField(_errorText, true);
-            if (errorFieldUI != null) errorFieldUI.height = 150;
-            
             _showPlayModeBtn.setCallbackFunction = delegate(bool val) {
-                if (val && !_isFirstBoot) {
+                if (val && Time.realtimeSinceStartup > 15f) {
                     _btnState = 0;
                     StopAllCoroutines();
                     StartCoroutine(ScanDependencies());
@@ -162,13 +159,6 @@ public class VAMBridgePlugin : MVRScript
 
     private void OnSceneLoaded() 
     { 
-        if (_isFirstBoot || Time.realtimeSinceStartup < 15f) 
-        {
-            _isFirstBoot = false;
-            BridgeLogger.Info("Boot sequence detected. Skipping auto-scan.");
-            return;
-        }
-
         StopAllCoroutines(); 
         _btnState = 0;
         StartCoroutine(DelayedScan()); 
@@ -183,8 +173,11 @@ public class VAMBridgePlugin : MVRScript
 
         if (Time.realtimeSinceStartup < 15f) 
         {
-            BridgeLogger.Info("VAM is booting. Skipping auto-scan to protect native file system.");
-            yield break;
+            BridgeLogger.Debug("Engine booting. Pausing auto-scan until VAM is fully initialized...");
+            while (Time.realtimeSinceStartup < 15f)
+            {
+                yield return null;
+            }
         }
 
         yield return new WaitForSeconds(1.5f); 
