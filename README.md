@@ -46,6 +46,20 @@ To ensure the Bridge is lightweight and only finds `.var` files in your reposito
 Click **Apply**. Everything is now a dedicated, ultra-lightweight VAM indexer.
 
 ---
+### VAM Launch from Tray ###
+🚀 Quick Launch Feature
+
+The VAM Dependency Bridge tray icon doubles as a convenient launcher for Virt-A-Mate, allowing you to start the game directly from your system tray.
+
+Launch Options:
+1. Desktop Mode: Launches VAM in non-VR mode by applying the -vrmode None argument.
+2. VR Mode (Default): Launches VAM using your standard VR configuration (no additional arguments).
+3. OpenVR Mode: Forces VAM to launch specifically using the OpenVR runtime with the -vrmode OpenVR argument.  
+
+How It Works:
+The daemon uses the VAM Root Directory defined in your settings to locate your VaM.exe file. When a mode is selected, it uses the Windows ProcessStartInfo class to execute the file with the specific Unity VR flags while automatically setting the correct working directory to ensure all internal VAM dependencies load correctly.
+
+---
 ### 🖥️ Command-Line Options (Debug Mode)
 For advanced troubleshooting, the Windows Daemon supports command-line flags to enable detailed logging.
 
